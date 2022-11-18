@@ -13,43 +13,38 @@ public class CajeroAutomatico {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        CajeroAutomatico retirocajero;
-        retirocajero = new CajeroAutomatico();
-        retirocajero.RetirarDinero(); //llamamos al metodo principal
+        Scanner scaner = new Scanner(System.in);
+        System.out.println("Ingrese el valor a retirar del cajero: ");
+        int monto = scaner.nextInt();
+        CajeroAutomatico retirocajero = new CajeroAutomatico();
+        retirocajero.RetirarDinero(monto);
     }
 
-    public void RetirarDinero() {
-        Scanner scaner = new Scanner(System.in);
-        System.out.println("Ingrese el valor a retirar del cajero");
-        int money = scaner.nextInt();
-        int[] billetes = {50000, 20000, 10000};
+    public void RetirarDinero(int monto) {
+        int[] billetesDisponibles = {50000, 20000, 10000};
         ArrayList billetesdevuetos = new ArrayList();
-        int contador, xb = 0, i = 0, sumaMoney = 0;
-        int dif = money;
+        int xbillete = 0, contador = 0, sumaMonto = 0, aux = 0;
+        int diferencia = monto;
 
-        if (money % 10000 == 0) {
-            while (sumaMoney != money) {
-                dif = dif - xb;
-                System.out.println("dif " + dif);
-                xb = SeleccionarBillete(billetes, dif);
-                System.out.println("xb " + xb);
-                sumaMoney = sumaMoney + xb;
-                System.out.println("suma " + sumaMoney);
-                billetesdevuetos.add(xb);
-                i++;
+        if (monto % 10000 == 0) {
+            while (sumaMonto != monto) {
+                diferencia -= xbillete;
+                xbillete = SeleccionarBillete(billetesDisponibles, diferencia, aux);
+                sumaMonto += xbillete;
+                billetesdevuetos.add(xbillete);
+                contador++;
             }
             for (int j = 0; j < billetesdevuetos.size(); j++) {
                 System.out.println(billetesdevuetos.get(j));
-                System.out.println("El retiro de " + sumaMoney + " fue exitoso");
             }
+            System.out.println("El retiro de " + sumaMonto + " fue exitoso");
         }
     }
 
-    int SeleccionarBillete(int[] billetes, int dif) {
-        int aux = 0;
-        for (int i = 0; i < billetes.length; i++) {
-            if (billetes[i] <= dif) {
-                aux = billetes[i];
+    int SeleccionarBillete(int[] billetesDisponibles, int diferencia, int aux) {
+        for (int i = 0; i < billetesDisponibles.length; i++) {
+            if (billetesDisponibles[i] <= diferencia) {
+                aux = billetesDisponibles[i];
                 break;
             }
         }
